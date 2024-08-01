@@ -22,6 +22,14 @@
         .container {
             position: relative;
             z-index: 1;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         .heart {
             position: relative;
@@ -60,10 +68,17 @@
             text-shadow: 0 0 10px rgba(255, 151, 217, 0.8), 0 0 20px rgba(255, 151, 217, 0.6);
             font-weight: bold;
         }
-        .message {
-            margin-top: 160px;
+        .message, .additional-message {
+            margin-top: 20px;
             font-size: 24px;
             font-family: 'Great Vibes', cursive;
+            transition: transform 0.5s ease-in-out;
+        }
+        .message {
+            margin-top: 160px;
+        }
+        .additional-message:hover {
+            transform: scale(1.1);
         }
         .sparkles {
             position: absolute;
@@ -99,6 +114,31 @@
             left: 10px;
             top: 0;
         }
+        .heart-explosion {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            transform: rotate(45deg);
+            animation: explode 1s ease-out forwards;
+        }
+        .heart-explosion::before,
+        .heart-explosion::after {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+        }
+        .heart-explosion::before {
+            top: -5px;
+            left: 0;
+        }
+        .heart-explosion::after {
+            left: 5px;
+            top: 0;
+        }
         @keyframes pulse {
             0% {
                 transform: scale(1) rotate(-45deg);
@@ -123,6 +163,16 @@
                 opacity: 0;
             }
         }
+        @keyframes explode {
+            0% {
+                transform: scale(0) rotate(45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2) translate(-50px, -50px);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -139,6 +189,29 @@
         <div class="message">
             Te amo meu amor, você é tudo que eu sempre quis. Feliz Aniversário para nós, você é tudo de bom.
         </div>
+        <div class="additional-message">
+            Te amo, Luana Ferreira dos Santos!
+        </div>
     </div>
+    <script>
+        document.addEventListener('click', function(event) {
+            const heartExplosionContainer = document.createElement('div');
+            heartExplosionContainer.style.position = 'absolute';
+            heartExplosionContainer.style.top = `${event.clientY}px`;
+            heartExplosionContainer.style.left = `${event.clientX}px`;
+            document.body.appendChild(heartExplosionContainer);
+
+            for (let i = 0; i < 10; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-explosion';
+                heart.style.animationDelay = `${i * 0.1}s`;
+                heartExplosionContainer.appendChild(heart);
+            }
+
+            setTimeout(() => {
+                document.body.removeChild(heartExplosionContainer);
+            }, 1000);
+        });
+    </script>
 </body>
 </html>
